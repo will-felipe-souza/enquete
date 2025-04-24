@@ -18,11 +18,14 @@ import QRCode from "qrcode"
 import Image from "next/image"
 import { ShareUrlButton } from "@/components/share-url-button"
 
-export default async function PollDetails({
-  params,
-}: {
-  params: { id: string }
-}) {
+interface PageProps {
+  params: {
+    id: string
+  }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default async function PollDetails({ params }: PageProps) {
   const { success, data: poll } = await getPollDetails(params.id)
 
   if (!success || !poll) {
