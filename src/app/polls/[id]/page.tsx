@@ -21,9 +21,9 @@ import { ShareUrlButton } from "@/components/share-url-button"
 export default async function PollDetails({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const { id } = params
+  const { id } = await params
   const { success, data: poll } = await getPollDetails(id)
 
   if (!success || !poll) {
