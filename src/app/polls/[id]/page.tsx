@@ -12,11 +12,12 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { formatDistanceToNow } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import { Progress } from "@/components/ui/progress"
 import { Share2 } from "lucide-react"
 import QRCode from "qrcode"
 import Image from "next/image"
 import { ShareUrlButton } from "@/components/share-url-button"
+import { PollOptionImage } from "@/components/poll-option-image"
+import { Progress } from "@/components/ui/progress"
 
 export default async function PollDetails({
   params,
@@ -67,12 +68,18 @@ export default async function PollDetails({
               <div className="space-y-4">
                 {poll.options.map((option) => (
                   <div key={option.id} className="space-y-2">
+                    <div className="text-sm font-medium">{option.title}</div>
+
+                    <PollOptionImage
+                      imageUrl={option.imageUrl}
+                      alt={option.title}
+                    />
+
                     <div className="flex justify-between text-sm">
-                      <span>{option.title}</span>
-                      <span>
-                        {option.votes} votos ({option.percentage.toFixed(1)}%)
-                      </span>
+                      <span>{option.votes} votos</span>
+                      <span>{option.percentage.toFixed(1)}%</span>
                     </div>
+
                     <Progress value={option.percentage} className="h-2" />
                   </div>
                 ))}
