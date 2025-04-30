@@ -17,17 +17,27 @@ import { X } from "lucide-react"
 import { createPoll } from "@/app/actions/polls"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import Image from "next/image"
+import { genUploader } from "uploadthing/client"
+
+type Option = {
+  text: string
+  image?: File | null
+}
 
 export default function NewPoll() {
   const router = useRouter()
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
-  const [options, setOptions] = useState<string[]>(["", ""])
+  const [options, setOptions] = useState<Option[]>([
+    { text: "", image: null },
+    { text: "", image: null },
+  ])
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const addOption = () => {
     if (options.length < 4) {
-      setOptions([...options, ""])
+      setOptions([...options, { text: "", image: null }])
     }
   }
 
@@ -37,32 +47,55 @@ export default function NewPoll() {
     }
   }
 
-  const updateOption = (index: number, value: string) => {
+  const updateOptionText = (index: number, value: string) => {
     const newOptions = [...options]
-    newOptions[index] = value
+    newOptions[index].text = value
+    setOptions(newOptions)
+  }
+
+  const updateOptionImage = (index: number, file: File | null) => {
+    const newOptions = [...options]
+    newOptions[index].image = file
     setOptions(newOptions)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Validation
     if (!title.trim()) {
       toast.error("O título é obrigatório")
       return
     }
 
-    if (options.some((opt) => !opt.trim())) {
-      toast.error("Todas as opções devem ser preenchidas")
+    if (options.some((opt) => !opt.text.trim())) {
+      toast.error("Todas as opções devem ter texto")
       return
     }
 
     try {
       setIsSubmitting(true)
+
+      const uploader = genUploader()
+
+      const uploadedImageUrls: (string | null)[] = await Promise.all(
+        options.map(async (opt) => {
+          if (!opt.image) return null
+
+          const res = await uploader.uploadFiles("imageUploader", {
+            files: [opt.image],
+          })
+
+          return res[0]?.url ?? null
+        })
+      )
+
       const result = await createPoll({
         title,
         description: description || undefined,
-        options: options.map((opt) => opt.trim()),
+        options: options.map((opt, index) => ({
+          text: opt.text.trim(),
+          imageUrl: uploadedImageUrls[index] ?? undefined,
+        })),
       })
 
       if (result.success) {
@@ -124,24 +157,50 @@ export default function NewPoll() {
 
               <div className="space-y-2">
                 <label className="text-sm font-medium">Opções</label>
-                <div className="space-y-2">
+                <div className="space-y-4">
                   {options.map((option, index) => (
-                    <div key={index} className="flex gap-2">
+                    <div
+                      key={index}
+                      className="space-y-2 border p-4 rounded-md"
+                    >
+                      <div className="flex gap-2 items-center">
+                        <Input
+                          placeholder={`Opção ${index + 1}`}
+                          value={option.text}
+                          onChange={(e) =>
+                            updateOptionText(index, e.target.value)
+                          }
+                          required
+                        />
+                        {options.length > 2 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            onClick={() => removeOption(index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
                       <Input
-                        placeholder={`Opção ${index + 1}`}
-                        value={option}
-                        onChange={(e) => updateOption(index, e.target.value)}
-                        required
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0] || null
+                          updateOptionImage(index, file)
+                        }}
                       />
-                      {options.length > 2 && (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon"
-                          onClick={() => removeOption(index)}
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
+                      {option.image && (
+                        <div className="mt-2">
+                          <Image
+                            width={300}
+                            height={300}
+                            src={URL.createObjectURL(option.image)}
+                            alt="Preview"
+                            className="max-h-32 object-contain rounded-md"
+                          />
+                        </div>
                       )}
                     </div>
                   ))}

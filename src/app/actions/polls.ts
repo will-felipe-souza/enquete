@@ -20,7 +20,10 @@ export async function getPolls() {
 export async function createPoll(data: {
   title: string
   description?: string
-  options: string[]
+  options: {
+    text: string
+    imageUrl?: string
+  }[]
 }) {
   try {
     const poll = await prisma.poll.create({
@@ -28,8 +31,9 @@ export async function createPoll(data: {
         title: data.title,
         description: data.description,
         options: {
-          create: data.options.map((title) => ({
-            title,
+          create: data.options.map((opt) => ({
+            title: opt.text,
+            imageUrl: opt.imageUrl,
           })),
         },
       },
