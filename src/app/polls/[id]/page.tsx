@@ -10,8 +10,8 @@ import {
 import { getPollDetails } from "@/app/actions/polls"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { formatDistanceToNow } from "date-fns"
-import { ptBR } from "date-fns/locale"
+// import { formatDistanceToNow } from "date-fns"
+// import { ptBR } from "date-fns/locale"
 import { Share2 } from "lucide-react"
 import QRCode from "qrcode"
 import Image from "next/image"
@@ -53,34 +53,94 @@ export default async function PollDetails({
               )}
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="text-sm text-muted-foreground">
+              {/* <div className="text-sm text-muted-foreground">
                 Criada{" "}
                 {formatDistanceToNow(new Date(poll.createdAt), {
                   locale: ptBR,
                   addSuffix: true,
                 })}
-              </div>
+              </div> */}
 
-              <div className="text-sm font-medium">
+              {/* <div className="text-sm font-medium">
                 Total de votos: {poll.totalVotes}
-              </div>
+              </div> */}
 
               <div className="space-y-4">
                 {poll.options.map((option) => (
                   <div key={option.id} className="space-y-2">
                     <div className="text-sm font-medium">{option.title}</div>
 
-                    <PollOptionImage
+                    {/* <PollOptionImage
                       imageUrl={option.imageUrl}
                       alt={option.title}
-                    />
+                    /> */}
 
                     <div className="flex justify-between text-sm">
-                      <span>{option.votes} votos</span>
+                      {/* <span>{option.votes} votos</span> */}
                       <span>{option.percentage.toFixed(1)}%</span>
                     </div>
 
                     <Progress value={option.percentage} className="h-2" />
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-[#00b140]">
+            <CardHeader>
+              <CardTitle>Resultado para a Live</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="text-sm font-medium">
+                Total de votos: {poll.totalVotes}
+              </div>
+
+              {/* <div className="space-y-4 grid grid-cols-2 gap-2">
+                {poll.options.map((option) => (
+                  <div key={option.id} className="space-y-2">
+                    <div className="text-center font-medium">
+                      {option.title}
+                    </div>
+
+                    <div className="flex gap-2 justify-center items-center">
+                      <PollOptionImage
+                        imageUrl={option.imageUrl}
+                        alt={option.title}
+                      />
+
+                      <div className="flex justify-between">
+                        <span>{option.votes} votos</span>
+                        <span>{option.percentage.toFixed()}%</span>
+                      </div>
+
+                      <Progress value={option.percentage} className="h-2" />
+                    </div>
+                  </div>
+                ))}
+              </div> */}
+              <div className="grid grid-cols-2 gap-4">
+                {poll.options.map((option) => (
+                  <div
+                    key={option.id}
+                    className="items-center gap-1 p-2 rounded-lg bg-[#00b140]"
+                  >
+                    <div className="text-center font-medium text-2xl bg-white rounded-lg mb-2">
+                      {option.title}
+                    </div>
+
+                    <div className="grid grid-cols-12 items-center bg-[#00000030] rounded-lg">
+                      <div className="col-span-7">
+                        <PollOptionImage
+                          imageUrl={option.imageUrl}
+                          alt={option.title}
+                        />
+                      </div>
+
+                      <span className="ml-2 text-5xl font-semibold col-span-5 flex justify-center">
+                        {option.percentage.toFixed()}%
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>

@@ -12,12 +12,12 @@ export function PollOptionImage({
   if (!imageUrl) return null
 
   return (
-    <div className="relative h-40 w-full overflow-hidden rounded-lg border">
+    <div className="relative h-50 w-full overflow-hidden rounded-lg border">
       <Image
         src={imageUrl}
         alt={alt}
         fill
-        className="object-cover"
+        className="object-cover w-32 h-24"
         sizes="(max-width: 768px) 100vw, 50vw"
       />
     </div>
