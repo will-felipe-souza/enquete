@@ -34,7 +34,7 @@ export default async function PollDetails({
 
   const authIser = await currentUser()
 
-  let qrCodeDataUrl: string | null = null
+  let qrCodeDataUrl = ""
   let shareUrl = ""
 
   if (authIser) {
