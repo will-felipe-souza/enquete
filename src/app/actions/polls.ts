@@ -42,7 +42,7 @@ export async function createPoll(data: {
       },
     })
 
-    revalidatePath("/")
+    revalidatePath("/polls")
     return { success: true, data: poll }
   } catch (error) {
     console.error("Error creating poll:", error)
