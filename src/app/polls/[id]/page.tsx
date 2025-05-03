@@ -34,13 +34,8 @@ export default async function PollDetails({
 
   const authIser = await currentUser()
 
-  let qrCodeDataUrl = ""
-  let shareUrl = ""
-
-  if (authIser) {
-    shareUrl = `${process.env.NEXT_PUBLIC_APP_URL}/polls/${poll.id}/vote`
-    qrCodeDataUrl = await QRCode.toDataURL(shareUrl)
-  }
+  const shareUrl = `${process.env.NEXT_PUBLIC_APP_URL}/polls/${poll.id}/vote`
+  const qrCodeDataUrl = await QRCode.toDataURL(shareUrl)
 
   return (
     <main className="container mx-auto py-10">
@@ -143,7 +138,7 @@ export default async function PollDetails({
                           {option.title}
                         </div>
 
-                        <div className="grid grid-cols-12 items-center bg-[#00000030] rounded-lg">
+                        <div className="grid grid-cols-12 items-center bg-[#00000090] rounded-lg">
                           <div className="col-span-7">
                             <PollOptionImage
                               imageUrl={option.imageUrl}
@@ -151,7 +146,7 @@ export default async function PollDetails({
                             />
                           </div>
 
-                          <span className="ml-2 text-5xl font-semibold col-span-5 flex justify-center">
+                          <span className="ml-2 text-5xl text-white font-semibold col-span-5 flex justify-center">
                             {option.percentage.toFixed()}%
                           </span>
                         </div>
@@ -160,42 +155,39 @@ export default async function PollDetails({
                   </div>
                 </CardContent>
               </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Share2 className="h-5 w-5" />
-                    Compartilhar
-                  </CardTitle>
-                  <CardDescription>
-                    Compartilhe o link ou QR code para que outras pessoas possam
-                    votar
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <ShareUrlButton url={shareUrl} />
-
-                  <div className="flex justify-center">
-                    <div className="p-4 bg-white rounded-xl">
-                      <Image
-                        src={qrCodeDataUrl}
-                        alt="QR Code"
-                        width={200}
-                        height={200}
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Link href={`/polls/${poll.id}/vote`} className="w-full">
-                    <Button className="w-full">
-                      Ir para página de votação
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
             </>
           )}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Share2 className="h-5 w-5" />
+                Compartilhar
+              </CardTitle>
+              <CardDescription>
+                Compartilhe o link ou QR code para que outras pessoas possam
+                votar
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <ShareUrlButton url={shareUrl} />
+
+              <div className="flex justify-center">
+                <div className="p-4 bg-white rounded-xl">
+                  <Image
+                    src={qrCodeDataUrl}
+                    alt="QR Code"
+                    width={200}
+                    height={200}
+                  />
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Link href={`/polls/${poll.id}/vote`} className="w-full">
+                <Button className="w-full">Ir para página de votação</Button>
+              </Link>
+            </CardFooter>
+          </Card>
         </div>
       </div>
     </main>
