@@ -39,7 +39,7 @@ export default async function PollDetails({
 
   return (
     <main className="container mx-auto py-10">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Detalhes da Enquete</h1>
           {authIser && (
@@ -128,7 +128,7 @@ export default async function PollDetails({
                   </div>
                 ))}
               </div> */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-3 gap-4">
                     {poll.options.map((option) => (
                       <div
                         key={option.id}
