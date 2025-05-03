@@ -37,7 +37,11 @@ export default async function PollDetails({
 
   return (
     <main className="container mx-auto py-10">
-      <div className="max-w-5xl mx-auto">
+      <div
+        className={`${
+          poll.options.length === 2 ? "max-w-3xl" : "max-w-5xl"
+        } mx-auto`}
+      >
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Detalhes da Enquete</h1>
           {authIser && (
@@ -84,7 +88,11 @@ export default async function PollDetails({
                   <div className="text-sm font-medium">
                     Total de votos: {poll.totalVotes}
                   </div>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div
+                    className={`grid ${
+                      poll.options.length === 2 ? "grid-cols-2" : "grid-cols-3"
+                    } gap-4`}
+                  >
                     {poll.options.map((option) => (
                       <div
                         key={option.id}
