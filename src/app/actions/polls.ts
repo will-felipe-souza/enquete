@@ -111,3 +111,19 @@ export async function vote(pollId: string, optionId: string) {
     return { success: false, error: "Failed to submit vote" }
   }
 }
+
+export async function deletePoll(id: string) {
+  try {
+    await prisma.poll.delete({
+      where: {
+        id,
+      },
+    })
+
+    revalidatePath("/")
+    return { success: true }
+  } catch (error) {
+    console.error("Error deleting poll:", error)
+    return { success: false, error: "Failed to delete poll" }
+  }
+}

@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import Link from "next/link"
-import { getPolls } from "@/app/actions/polls"
+import { deletePoll, getPolls } from "@/app/actions/polls"
 import { formatDistanceToNow } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { SignOutButton } from "@clerk/nextjs"
@@ -62,12 +62,21 @@ export default async function Home() {
                   })}
                 </p>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="flex justify-between gap-2">
                 <Link href={`/polls/${poll.id}`} className="w-full">
                   <Button variant="outline" className="w-full">
                     Ver Detalhes
                   </Button>
                 </Link>
+                <form
+                  action={async () => {
+                    "use server"
+                    await deletePoll(poll.id)
+                  }}
+                  className="flex-1"
+                >
+                  <Button variant="destructive">Excluir</Button>
+                </form>
               </CardFooter>
             </Card>
           ))}
