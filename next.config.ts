@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["utfs.io"],
   },
+  serverExternalPackages: ["@prisma/client"],
 }
 
 export default nextConfig
