@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Enquete
 
-## Getting Started
+Aplicação web para criação, votação e acompanhamento de enquetes em tempo real.
 
-First, run the development server:
+## Tecnologias Utilizadas
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js** 15 (App Router)
+- **React** 19
+- **TypeScript**
+- **Prisma ORM**
+- **PostgreSQL** (banco de dados)
+- **TailwindCSS** (estilização)
+- **Radix UI** (componentes acessíveis)
+- **Clerk** (autenticação)
+- **UploadThing** (upload de imagens)
+- **Docker** (ambiente de desenvolvimento)
+
+## Estrutura de Diretórios
+
+```
+├── src/
+│   ├── app/           # Páginas e rotas
+│   │   ├── polls/     # CRUD de enquetes
+│   │   ├── actions/   # Funções server actions
+│   │   └── api/       # APIs (ex: upload de imagens)
+│   ├── components/    # Componentes reutilizáveis
+│   ├── lib/           # Utilitários e instâncias (ex: prisma)
+│   └── middleware.ts  # Proteção de rotas
+├── prisma/            # Migrations e schema do banco
+├── public/            # Assets estáticos
+├── docker-compose.yml # Ambiente Docker
+└── ...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Funcionalidades
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Cadastro e autenticação de usuários (Clerk)
+- Criação de enquetes com até 4 opções (com ou sem imagem)
+- Listagem de enquetes
+- Votação em enquetes (1 voto por usuário)
+- Visualização de resultados em tempo real (com barra de progresso)
+- Compartilhamento de enquetes (link e QRCode)
+- Exclusão de enquetes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Como Rodar Localmente
 
-## Learn More
+### Pré-requisitos
+- Node.js 20+
+- Docker (opcional, para banco de dados)
+- PostgreSQL (caso não use Docker)
 
-To learn more about Next.js, take a look at the following resources:
+### 1. Clonar o repositório
+```bash
+git clone <url-do-repo>
+cd enquete
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Configurar variáveis de ambiente
+Crie um arquivo `.env` na raiz com:
+```
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/enquete
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=...
+CLERK_SECRET_KEY=...
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 3. Subir o banco de dados (usando Docker)
+```bash
+docker-compose up -d
+```
 
-## Deploy on Vercel
+### 4. Instalar dependências e rodar as migrations
+```bash
+npm install
+npx prisma generate
+npx prisma migrate deploy
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5. Rodar o projeto
+```bash
+npm run dev
+```
+Acesse: http://localhost:3000
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+#### Ou rode tudo com Docker (Node + Postgres):
+```bash
+docker-compose up --build
+```
+
+## Principais Scripts
+- `npm run dev` — inicia o servidor Next.js em modo desenvolvimento
+- `npm run build` — build de produção
+- `npm run start` — inicia o servidor em produção
+- `npx prisma migrate deploy` — aplica as migrations
+
+## Estrutura do Banco de Dados (Prisma)
+- **Poll**: id, title, description, createdAt, updatedAt
+- **Option**: id, title, imageUrl, pollId, createdAt, updatedAt
+- **Vote**: id, pollId, optionId, createdAt
+
+## Contribuição
+1. Faça um fork do projeto
+2. Crie uma branch: `git checkout -b minha-feature`
+3. Commit suas alterações: `git commit -m 'feat: minha feature'`
+4. Push na branch: `git push origin minha-feature`
+5. Abra um Pull Request
+
+---
+
+Projeto desenvolvido com Next.js, Prisma, Clerk e TailwindCSS.
