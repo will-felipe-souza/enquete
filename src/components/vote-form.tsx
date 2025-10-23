@@ -96,6 +96,15 @@ export function VoteForm({ poll }: VoteFormProps) {
           ))}
         </RadioGroup>
       </CardContent>
+      
+      {/* BANNER INTERMEDIÁRIO DENTRO DO CARD */}
+      <div className="px-6 pb-4">
+        <div className="p-3 bg-blue-500 text-white text-center rounded-lg">
+          <div className="text-xs font-bold">BANNER INTERMEDIÁRIO - VOTAÇÃO</div>
+          <div className="text-xs">300x250 (Desktop) / 320x100 (Mobile)</div>
+        </div>
+      </div>
+      
       <CardFooter>
         <Button className="w-full" onClick={handleVote} disabled={isSubmitting}>
           {isSubmitting ? "Registrando voto..." : "Votar"}

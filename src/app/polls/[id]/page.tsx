@@ -39,6 +39,12 @@ export default async function PollDetails({
       <div
         className={"max-w-3xl mx-auto"}
       >
+        {/* BANNER SUPERIOR */}
+        <div className="mb-6 p-4 bg-red-500 text-white text-center rounded-lg">
+          <div className="text-sm font-bold">BANNER SUPERIOR</div>
+          <div className="text-xs">728x90 (Desktop) / 320x50 (Mobile)</div>
+        </div>
+
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Detalhes da Enquete</h1>
           {authIser && (
@@ -80,6 +86,12 @@ export default async function PollDetails({
             </CardContent>
           </Card>
 
+          {/* BANNER INTERMEDIÁRIO */}
+          <div className="p-4 bg-blue-500 text-white text-center rounded-lg">
+            <div className="text-sm font-bold">BANNER INTERMEDIÁRIO</div>
+            <div className="text-xs">300x250 (Desktop) / 320x100 (Mobile)</div>
+          </div>
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -111,6 +123,12 @@ export default async function PollDetails({
               </Link>
             </CardFooter>
           </Card>
+
+          {/* BANNER INFERIOR */}
+          <div className="p-4 bg-green-500 text-white text-center rounded-lg">
+            <div className="text-sm font-bold">BANNER INFERIOR</div>
+            <div className="text-xs">728x90 (Desktop) / 320x50 (Mobile)</div>
+          </div>
         </div>
       </div>
     </main>
