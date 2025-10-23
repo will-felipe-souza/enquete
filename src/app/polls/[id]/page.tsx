@@ -14,7 +14,6 @@ import { Share2 } from "lucide-react"
 import QRCode from "qrcode"
 import Image from "next/image"
 import { ShareUrlButton } from "@/components/share-url-button"
-import { PollOptionImage } from "@/components/poll-option-image"
 import { Progress } from "@/components/ui/progress"
 import { currentUser } from "@clerk/nextjs/server"
 
@@ -38,18 +37,21 @@ export default async function PollDetails({
   return (
     <main className="container mx-auto py-10">
       <div
-        className={`${
-          poll.options.length === 2 ? "max-w-3xl" : "max-w-5xl"
-        } mx-auto`}
+        className={"max-w-3xl mx-auto"}
       >
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Detalhes da Enquete</h1>
           {authIser && (
-            <>
+            <div className="flex gap-2">
+              <Link href={`/result-live/${poll.id}`}>
+                <Button className="bg-[#00b140] hover:bg-[#00b140]/90">
+                  Ver Resultado Live
+                </Button>
+              </Link>
               <Link href="/polls">
                 <Button variant="outline">Voltar</Button>
               </Link>
-            </>
+            </div>
           )}
         </div>
 
@@ -78,49 +80,6 @@ export default async function PollDetails({
             </CardContent>
           </Card>
 
-          {authIser && (
-            <>
-              <Card className="bg-[#00b140]">
-                <CardHeader>
-                  <CardTitle>Resultado para a Live</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="text-sm font-medium">
-                    Total de votos: {poll.totalVotes}
-                  </div>
-                  <div
-                    className={`grid ${
-                      poll.options.length === 2 ? "grid-cols-2" : "grid-cols-3"
-                    } gap-4`}
-                  >
-                    {poll.options.map((option) => (
-                      <div
-                        key={option.id}
-                        className="items-center gap-1 p-2 rounded-lg bg-[#00b140]"
-                      >
-                        <div className="text-center font-medium text-2xl bg-white rounded-lg mb-2">
-                          {option.title}
-                        </div>
-
-                        <div className="grid grid-cols-12 items-center bg-[#00000090] rounded-lg">
-                          <div className="col-span-7">
-                            <PollOptionImage
-                              imageUrl={option.imageUrl}
-                              alt={option.title}
-                            />
-                          </div>
-
-                          <span className="ml-2 text-5xl text-white font-semibold col-span-5 flex justify-center">
-                            {option.percentage.toFixed()}%
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </>
-          )}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
