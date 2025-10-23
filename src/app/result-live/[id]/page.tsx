@@ -31,16 +31,22 @@ export default async function ResultLive({
   }
 
   return (
-    <main className="py-10">
-      <div className="w-full flex flex-col items-center">
-        <div className="w-[1200px] flex justify-between items-center mb-8">
+    <main className="container mx-auto py-10">
+      <div
+        className={`${
+          poll.options.length <= 2 ? "max-w-4xl" : 
+          poll.options.length === 3 ? "max-w-6xl" : 
+          "max-w-7xl"
+        } mx-auto`}
+      >
+        <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Resultado Live - {poll.title}</h1>
           <Link href={`/polls/${id}`}>
             <Button variant="outline">Voltar para detalhes</Button>
           </Link>
         </div>
 
-        <Card className="bg-[#00b140] w-[1200px]">
+        <Card className="bg-[#00b140]">
           <CardHeader>
             <CardTitle>Resultado para a Live</CardTitle>
           </CardHeader>
